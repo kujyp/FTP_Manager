@@ -23,9 +23,9 @@ def load_allpath(path):
             res.append(filepath)
     return res
 
-def file_exists_inftp(ftpfiles,filename):
-    for ftpfile in ftpfiles:
-        if ftpfile == filename:
+def file_exists_inftp(ftp_paths,filename):
+    for ftp_path in ftp_paths:
+        if ftp_path == filename:
             return True
     return False
 
@@ -34,29 +34,31 @@ ftp = FTP(ftp_domain)
 ftp.login(ftp_user,ftp_pwd)
 print('Connected FTP Server : \t\t' + ftp_domain)
 
-path = (ftp_homepath + '/' + ftp_targetpath)
-ftp.cwd(path)
-print('Connected FTP Dir : \t\t' + path)
+ftp_path = (ftp_homepath + '/' + ftp_targetpath)
+ftp.cwd(ftp_path)
+print('Connected FTP Dir : \t\t' + ftp_path)
 
-paths = load_allpath(ftp_uploadlocaldir)
+local_paths = load_allpath(ftp_uploadlocaldir)
 
 # existing FTP files
-ftpfilepaths = ftp.nlst()
-ftpfiles = []
-for ftpfilepath in ftpfilepaths:
-    ftpfiles.append(ftpfilepath.split('/')[-1])
+ftp_fullpaths = ftp.nlst()
+print(ftp_fullpaths)
+ftp_paths = []
+for ftp_fullpath in ftp_fullpaths:
+    ftp_path = ftp_fullpath.split('/')[-1]
+    ftp_paths.append(ftp_path)
 
 # FILEPATH windows(\) or mac(/)...
-if paths[0].find('\\') == -1:
-    spliter = '/'
+if local_paths[0].find('\\') == -1:
+    local_spliter = '/'
 else:
-    spliter = '\\'
+    local_spliter = '\\'
 
-for path in paths:
-    filename = path.split(spliter)[-1]
-    file = open(path,'rb')
+for local_path in local_paths:
+    filename = local_path.split(local_spliter)[-1]
+    local_file = open(local_path,'rb')
 
-    if file_exists_inftp(ftpfiles,filename):
+    if file_exists_inftp(ftp_paths,filename):
         print('Exist file : \t\t\t\t' + filename)
     else:
         print("Uploading ... \t\t\t\t" + filename)
