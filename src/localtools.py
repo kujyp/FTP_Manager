@@ -13,6 +13,6 @@ def mkdir_unless_exist(local_path):
         try:
             os.stat(next_path)
         except:
-            print('Make dir : \t\t\t\t\t' + next_path)
+            print('\nMake dir : \t\t\t\t\t' + next_path)
             os.mkdir(next_path)
         path = next_path

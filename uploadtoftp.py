@@ -3,7 +3,14 @@ import os
 from config import Parameter
 from src.ftptools import get_everyrelpath_fromftp
 from src import ftptools
+from tqdm import tqdm
+import sys
+import time
 
+
+# encoding for filename with korean
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # load config.py
 PARMS = Parameter()
@@ -41,7 +48,9 @@ print('Connected FTP Dir : \t\t' + ftp_path)
 
 local_paths = load_allpath(ftp_uploadlocaldir)
 local_abspathlen = len(ftp_uploadlocaldir)
-for local_path in local_paths:
+
+pbar = tqdm(local_paths)
+for local_path in pbar:
     filename = local_path.split(os.sep)[-1]
     dirnames = local_path.split(os.sep)[1:-1]
 
@@ -57,11 +66,20 @@ for local_path in local_paths:
     local_relpath = local_path[local_abspathlen:]
 
     if file_exists_inftp(ftp_relpaths,local_relpath):
-        print('Exist file : \t\t\t\t' + local_relpath)
+        pbar.set_description('Exist file : \t\t\t\t' + local_relpath + '\n')
     else:
-        ftptools.mkdir_unless_exist(ftp, ftp_curpath)
-        ftp.cwd(ftp_curpath)
-        print("Uploading ... \t\t\t\t" + local_relpath)
-        ftp.storbinary('STOR %s' % filename, local_file)
+        try:
+            ftptools.mkdir_unless_exist(ftp, ftp_curpath)
+            ftp.cwd(ftp_curpath)
+            pbar.set_description('Uploading ... \t\t\t\t' + local_relpath + '\n')
+            ftp.storbinary('STOR %s' % filename, local_file)
+        except:
+            pbar.set_description('Uploading ... \t\t\t\t' + local_relpath + ' retry . ' + '\n')
+            time.sleep(1)
+            pbar.set_description('Uploading ... \t\t\t\t' + local_relpath + ' retry .. ' + '\n')
+            time.sleep(1)
+            pbar.set_description('Uploading ... \t\t\t\t' + local_relpath + ' retry ... ' + '\n')
+            time.sleep(1)
+            ftp.storbinary('STOR %s' % filename, local_file)
 
 ftp.quit()

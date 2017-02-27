@@ -3,6 +3,14 @@ import os
 from config import Parameter
 from src.ftptools import get_everyrelpath_fromftp
 from src import localtools
+from tqdm import tqdm
+import sys
+import time
+
+
+# encoding for filename with korean
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # load config.py
 PARMS = Parameter()
@@ -27,7 +35,8 @@ ftp_relpaths = get_everyrelpath_fromftp(ftp, ftp_path)
 print('Connected FTP Dir : \t\t' + ftp_path)
 
 # Download all files
-for ftp_relpath in ftp_relpaths:
+pbar = tqdm(ftp_relpaths)
+for ftp_relpath in pbar:
     filename = ftp_relpath.split('/')[-1]
     dirnames = ftp_relpath.split('/')[1:-1]
 
@@ -39,11 +48,20 @@ for ftp_relpath in ftp_relpaths:
 
     local_pathwithfilename = os.path.join(local_path, filename)
     if os.path.isfile(local_pathwithfilename):
-        print('Exist file : \t\t\t\t' + local_pathwithfilename)
+        pbar.set_description('Exist file : \t\t\t\t' + local_pathwithfilename + '\n')
     else:
-        localtools.mkdir_unless_exist(local_path)
-        ftp.cwd(ftp_curpath)
-        print("Downloading ... \t\t\t" + local_pathwithfilename)
-        ftp.retrbinary('RETR %s' % filename, open(local_pathwithfilename, 'wb').write)
+        try:
+            localtools.mkdir_unless_exist(local_path)
+            ftp.cwd(ftp_curpath)
+            pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + '\n')
+            ftp.retrbinary('RETR %s' % filename, open(local_pathwithfilename, 'wb').write)
+        except:
+            pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + ' retry . ' + '\n')
+            time.sleep(1)
+            pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + ' retry .. ' + '\n')
+            time.sleep(1)
+            pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + ' retry ... ' + '\n')
+            time.sleep(1)
+            ftp.retrbinary('RETR %s' % filename, open(local_pathwithfilename, 'wb').write)
 
 ftp.quit()
