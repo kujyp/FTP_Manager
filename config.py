@@ -12,4 +12,4 @@ class Parameter:
         self.ftp_downloadlocaldir = 'downdata'
         # self.ftp_homepath = '/My_Passport/Download2/workspace/data/LecrecStudy/records'
         # self.ftp_targetpath = 'korean/01_20male'
-        # self.ftp_downloadlocaldir = 'download/korean/01_20male'
+        # self.ftp_downloadlocaldir = 'downdata/korean/01_20male'
