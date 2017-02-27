@@ -16,11 +16,9 @@ def load_allpath(path):
     res = []
 
     for root, dirs, files in os.walk(path):
-        for dir in dirs:
-            res += load_allpath(os.path.join(path,dir))
         for file in files:
-            filepath = os.path.join(path, file)
-            res.append(filepath)
+           filepath = os.path.join(root, file)
+           res.append(filepath)
     return res
 
 def file_exists_inftp(ftp_paths,filename):
