@@ -32,7 +32,7 @@ ftp = FTP(ftp_domain)
 ftp.login(ftp_user,ftp_pwd)
 print('Connected FTP Server : \t\t' + ftp_domain)
 
-path = os.path.join(ftp_homepath, ftp_targetpath)
+path = (ftp_homepath + '/' + ftp_targetpath)
 ftp.cwd(path)
 print('Connected FTP Dir : \t\t' + path)
 
