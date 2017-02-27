@@ -15,11 +15,7 @@ ftp_downloadlocaldir = PARMS.ftp_downloadlocaldir
 
 # mkdir in local
 local_dir = ftp_downloadlocaldir
-try:
-    os.stat(local_dir)
-except:
-    os.mkdir(local_dir)
-    print('Make directory in local : \t' + local_dir)
+localtools.mkdir_unless_exist(ftp_downloadlocaldir)
 
 # ftp connect
 ftp = FTP(ftp_domain)
