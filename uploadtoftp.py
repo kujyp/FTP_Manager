@@ -17,7 +17,7 @@ def load_allpath(path):
 
     for root, dirs, files in os.walk(path):
         for file in files:
-            filepath = os.path.join(os.path.abspath(path), file)
+            filepath = os.path.join(path, file)
             res.append(filepath)
     return res
 
