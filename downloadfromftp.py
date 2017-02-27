@@ -1,7 +1,8 @@
 from ftplib import FTP
 import os
 from config import Parameter
-from src.ftptools import get_everypath_fromftp
+from src.ftptools import get_everyrelpath_fromftp
+from src import localtools
 
 # load config.py
 PARMS = Parameter()
@@ -13,32 +14,41 @@ ftp_targetpath = PARMS.ftp_targetpath
 ftp_downloadlocaldir = PARMS.ftp_downloadlocaldir
 
 # mkdir in local
-localdir = ftp_downloadlocaldir
+local_dir = ftp_downloadlocaldir
 try:
-    os.stat(localdir)
+    os.stat(local_dir)
 except:
-    os.mkdir(localdir)
-    print('Make directory in local : \t' + localdir)
+    os.mkdir(local_dir)
+    print('Make directory in local : \t' + local_dir)
 
 # ftp connect
 ftp = FTP(ftp_domain)
 ftp.login(ftp_user,ftp_pwd)
 print('Connected FTP Server : \t\t' + ftp_domain)
 
-path = (ftp_homepath + '/' + ftp_targetpath)
-ftp.cwd(path)
-print('Connected FTP Dir : \t\t' + path)
+ftp_path = (ftp_homepath + '/' + ftp_targetpath)
+ftp_relpaths = get_everyrelpath_fromftp(ftp, ftp_path)
+print('Connected FTP Dir : \t\t' + ftp_path)
 
 # Download all files
-files = get_everyrelpath_fromftp(ftp, path)
-for file in files:
-    filename = file.split('/')[-1]
+for ftp_relpath in ftp_relpaths:
+    filename = ftp_relpath.split('/')[-1]
+    dirnames = ftp_relpath.split('/')[1:-1]
 
-    localfilepath = os.path.join(localdir, filename)
-    if os.path.exists(localfilepath):
-        print('Exist file : \t\t\t\t' + localfilepath)
+    ftp_curpath = ftp_path
+    local_path = local_dir
+    for dirname in dirnames:
+        ftp_curpath = ftp_curpath + '/' + dirname
+        local_path = os.path.join(local_path, dirname)
+
+    local_pathwithfilename = os.path.join(local_path, filename)
+    if os.path.isfile(local_pathwithfilename):
+        print('Exist file : \t\t\t\t' + local_pathwithfilename)
     else:
-        print("Downloading ... \t\t\t" + filename)
-        ftp.retrbinary('RETR %s' % filename, open(localfilepath, 'wb').write)
+        localtools.mkdir_unless_exist(local_path)
+        ftp.cwd(ftp_curpath)
+        print("Downloading ... \t\t\t" + local_pathwithfilename)
+        os.mk
+        ftp.retrbinary('RETR %s' % filename, open(local_pathwithfilename, 'wb').write)
 
 ftp.quit()

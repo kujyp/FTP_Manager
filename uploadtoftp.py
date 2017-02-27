@@ -1,7 +1,8 @@
 from ftplib import FTP
 import os
 from config import Parameter
-from src.ftptools import get_everyrelpath_fromftp, mkdir_unless_exist
+from src.ftptools import get_everyrelpath_fromftp
+from src import ftptools
 
 
 # load config.py
@@ -58,7 +59,7 @@ for local_path in local_paths:
     if file_exists_inftp(ftp_relpaths,local_relpath):
         print('Exist file : \t\t\t\t' + local_relpath)
     else:
-        mkdir_unless_exist(ftp, ftp_curpath)
+        ftptools.mkdir_unless_exist(ftp, ftp_curpath)
         ftp.cwd(ftp_curpath)
         print("Uploading ... \t\t\t\t" + local_relpath)
         ftp.storbinary('STOR %s' % filename, local_file)

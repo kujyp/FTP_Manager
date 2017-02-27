@@ -1,5 +1,6 @@
 from ftplib import error_perm
 
+
 def get_everypath_fromftp(ftp, path):
     ftp.cwd(path)
 
