@@ -39,6 +39,7 @@ def mkdir_unless_exist(ftp, ftp_curpath):
         try:
             ftp.cwd(next_path)
         except error_perm:
-            print('Make dir : \t\t\t\t' + next_path)
+            print('\nMake dir : \t\t\t\t' + next_path)
+            ftp.cwd(path)
             ftp.mkd(dir)
         path = next_path
