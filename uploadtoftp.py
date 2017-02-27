@@ -56,6 +56,11 @@ else:
 
 for local_path in local_paths:
     filename = local_path.split(local_spliter)[-1]
+
+    # ignore .DS_Store
+    if filename[0] == '.':
+        continue
+
     local_file = open(local_path,'rb')
 
     if file_exists_inftp(ftp_paths,filename):
