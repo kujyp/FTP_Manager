@@ -41,14 +41,12 @@ local_paths = load_allpath(ftp_uploadlocaldir)
 
 # existing FTP files
 ftp_fullpaths = get_everypath_fromftp(ftp, '')
-#print(ftp_fullpaths)
 
 ftp_relpaths = []
 ftp_abspathlen = len(ftp_path)
 for ftp_fullpath in ftp_fullpaths:
     ftp_relpath = ftp_fullpath[ftp_abspathlen:]
     ftp_relpaths.append(ftp_relpath)
-    # print(ftp_relpath)
 
 local_abspathlen = len(ftp_uploadlocaldir)
 for local_path in local_paths:
@@ -71,7 +69,6 @@ for local_path in local_paths:
     else:
         mkdir_unless_exist(ftp, ftp_curpath)
         ftp.cwd(ftp_curpath)
-        #ftp.pwd()
         print("Uploading ... \t\t\t\t" + local_relpath)
         ftp.storbinary('STOR %s' % filename, local_file)
 
