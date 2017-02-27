@@ -48,14 +48,8 @@ for ftp_fullpath in ftp_fullpaths:
     ftp_path = ftp_fullpath.split('/')[-1]
     ftp_paths.append(ftp_path)
 
-# FILEPATH windows(\) or mac(/)...
-local_spliter = '/'
 for local_path in local_paths:
-    if '\\' in local_path:
-        local_spliter = '\\'
-
-for local_path in local_paths:
-    filename = local_path.split(local_spliter)[-1]
+    filename = local_path.split(os.sep)[-1]
 
     # ignore .DS_Store
     if filename[0] == '.':
