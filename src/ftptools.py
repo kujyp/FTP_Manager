@@ -2,14 +2,13 @@ from ftplib import error_perm
 
 def get_everypath_fromftp(ftp, path):
     ftp.cwd(path)
-    ftp.pwd()
 
     ftp_paths = ftp.nlst()
 
     everypath = []
     for ftp_path in ftp_paths:
+        dir_flag = False
         try:
-            dir_flag = False
             ftp.cwd(ftp_path + "/")
             dir_flag = True
             everypath += get_everypath_fromftp(ftp, ftp_path + "/")
@@ -18,6 +17,15 @@ def get_everypath_fromftp(ftp, path):
                 everypath.append(ftp_path)
                 #print ftp_path
     return everypath
+
+def get_everyrelpath_fromftp(ftp, path):
+    ftp_fullpaths = get_everypath_fromftp(ftp,path)
+    ftp_relpaths = []
+    ftp_abspathlen = len(path)
+    for ftp_fullpath in ftp_fullpaths:
+        ftp_relpath = ftp_fullpath[ftp_abspathlen:]
+        ftp_relpaths.append(ftp_relpath)
+    return ftp_relpaths
 
 def mkdir_unless_exist(ftp, ftp_curpath):
     dirs = ftp_curpath.split('/')

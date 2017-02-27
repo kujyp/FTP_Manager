@@ -30,7 +30,7 @@ ftp.cwd(path)
 print('Connected FTP Dir : \t\t' + path)
 
 # Download all files
-files = get_everypath_fromftp(ftp, '')
+files = get_everyrelpath_fromftp(ftp, path)
 for file in files:
     filename = file.split('/')[-1]
 

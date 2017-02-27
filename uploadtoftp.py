@@ -1,7 +1,7 @@
 from ftplib import FTP
 import os
 from config import Parameter
-from src.ftptools import get_everypath_fromftp, mkdir_unless_exist
+from src.ftptools import get_everyrelpath_fromftp, mkdir_unless_exist
 
 
 # load config.py
@@ -33,21 +33,12 @@ ftp = FTP(ftp_domain)
 ftp.login(ftp_user,ftp_pwd)
 print('Connected FTP Server : \t\t' + ftp_domain)
 
+# existing FTP files
 ftp_path = (ftp_homepath + '/' + ftp_targetpath)
-ftp.cwd(ftp_path)
+ftp_relpaths = get_everyrelpath_fromftp(ftp, ftp_path)
 print('Connected FTP Dir : \t\t' + ftp_path)
 
 local_paths = load_allpath(ftp_uploadlocaldir)
-
-# existing FTP files
-ftp_fullpaths = get_everypath_fromftp(ftp, '')
-
-ftp_relpaths = []
-ftp_abspathlen = len(ftp_path)
-for ftp_fullpath in ftp_fullpaths:
-    ftp_relpath = ftp_fullpath[ftp_abspathlen:]
-    ftp_relpaths.append(ftp_relpath)
-
 local_abspathlen = len(ftp_uploadlocaldir)
 for local_path in local_paths:
     filename = local_path.split(os.sep)[-1]
