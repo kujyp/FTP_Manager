@@ -1,4 +1,4 @@
-from ftplib import FTP
+from ftplib import FTP,error_perm
 import os
 from config import Parameter
 
@@ -27,6 +27,25 @@ def file_exists_inftp(ftp_paths,filename):
             return True
     return False
 
+def get_everypath_fromftp(ftp, path):
+    ftp.cwd(path)
+    ftp.pwd()
+
+    ftp_paths = ftp.nlst()
+
+    everypath = []
+    for ftp_path in ftp_paths:
+        try:
+            dir_flag = False
+            ftp.cwd(ftp_path + "/")
+            dir_flag = True
+            everypath += get_everypath_fromftp(ftp, ftp_path + "/")
+        except error_perm:
+            if not dir_flag:
+                everypath.append(ftp_path)
+                #print ftp_path
+    return everypath
+
 # ftp connect
 ftp = FTP(ftp_domain)
 ftp.login(ftp_user,ftp_pwd)
@@ -39,8 +58,8 @@ print('Connected FTP Dir : \t\t' + ftp_path)
 local_paths = load_allpath(ftp_uploadlocaldir)
 
 # existing FTP files
-ftp_fullpaths = ftp.nlst()
-print(ftp_fullpaths)
+ftp_fullpaths = get_everypath_fromftp(ftp, '')
+#print(ftp_fullpaths)
 ftp_paths = []
 for ftp_fullpath in ftp_fullpaths:
     ftp_path = ftp_fullpath.split('/')[-1]
