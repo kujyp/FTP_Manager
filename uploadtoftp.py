@@ -49,10 +49,10 @@ for ftp_fullpath in ftp_fullpaths:
     ftp_paths.append(ftp_path)
 
 # FILEPATH windows(\) or mac(/)...
-if local_paths[0].find('\\') == -1:
-    local_spliter = '/'
-else:
-    local_spliter = '\\'
+local_spliter = '/'
+for local_path in local_paths:
+    if '\\' in local_path:
+        local_spliter = '\\'
 
 for local_path in local_paths:
     filename = local_path.split(local_spliter)[-1]
