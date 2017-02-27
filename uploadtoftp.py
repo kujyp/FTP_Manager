@@ -42,24 +42,36 @@ local_paths = load_allpath(ftp_uploadlocaldir)
 # existing FTP files
 ftp_fullpaths = get_everypath_fromftp(ftp, '')
 #print(ftp_fullpaths)
-ftp_paths = []
-for ftp_fullpath in ftp_fullpaths:
-    ftp_path = ftp_fullpath.split('/')[-1]
-    ftp_paths.append(ftp_path)
 
+ftp_relpaths = []
+ftp_abspathlen = len(ftp_path)
+for ftp_fullpath in ftp_fullpaths:
+    ftp_relpath = ftp_fullpath[ftp_abspathlen:]
+    ftp_relpaths.append(ftp_relpath)
+    # print(ftp_relpath)
+
+local_abspathlen = len(ftp_uploadlocaldir)
 for local_path in local_paths:
     filename = local_path.split(os.sep)[-1]
+    dirnames = local_path.split(os.sep)[1:-1]
+
+    ftp_curpath = ftp_path
+    for dirname in dirnames:
+        ftp_curpath= ftp_curpath + '/' + dirname
 
     # ignore .DS_Store
     if filename[0] == '.':
         continue
 
     local_file = open(local_path,'rb')
+    local_relpath = local_path[local_abspathlen:]
 
-    if file_exists_inftp(ftp_paths,filename):
-        print('Exist file : \t\t\t\t' + filename)
+    if file_exists_inftp(ftp_relpaths,local_relpath):
+        print('Exist file : \t\t\t\t' + local_relpath)
     else:
-        print("Uploading ... \t\t\t\t" + filename)
-        ftp.storbinary('STOR %s' % filename, file)
+        ftp.cwd(ftp_curpath)
+        ftp.pwd()
+        print("Uploading ... \t\t\t\t" + local_relpath)
+        ftp.storbinary('STOR %s' % filename, local_file)
 
 ftp.quit()
