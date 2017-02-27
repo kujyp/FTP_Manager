@@ -44,8 +44,13 @@ ftpfiles = []
 for ftpfilepath in ftpfilepaths:
     ftpfiles.append(ftpfilepath.split('/')[-1])
 
+if paths[0].find('\\') == -1:
+    spliter = '/'
+else:
+    spliter = '\\'
+
 for path in paths:
-    filename = path.split('/')[-1]
+    filename = path.split(spliter)[-1]
     file = open(path,'rb')
 
     if file_exists_inftp(ftpfiles,filename):
