@@ -1,7 +1,7 @@
 from ftplib import FTP
 import os
 from config import Parameter
-
+from src.ftptools import get_everypath_fromftp
 
 # load config.py
 PARMS = Parameter()
@@ -30,7 +30,7 @@ ftp.cwd(path)
 print('Connected FTP Dir : \t\t' + path)
 
 # Download all files
-files = ftp.nlst()
+files = get_everypath_fromftp(ftp, '')
 for file in files:
     filename = file.split('/')[-1]
 

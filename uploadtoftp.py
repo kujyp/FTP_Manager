@@ -1,6 +1,7 @@
-from ftplib import FTP,error_perm
+from ftplib import FTP
 import os
 from config import Parameter
+from src.ftptools import get_everypath_fromftp
 
 
 # load config.py
@@ -26,25 +27,6 @@ def file_exists_inftp(ftp_paths,filename):
         if ftp_path == filename:
             return True
     return False
-
-def get_everypath_fromftp(ftp, path):
-    ftp.cwd(path)
-    ftp.pwd()
-
-    ftp_paths = ftp.nlst()
-
-    everypath = []
-    for ftp_path in ftp_paths:
-        try:
-            dir_flag = False
-            ftp.cwd(ftp_path + "/")
-            dir_flag = True
-            everypath += get_everypath_fromftp(ftp, ftp_path + "/")
-        except error_perm:
-            if not dir_flag:
-                everypath.append(ftp_path)
-                #print ftp_path
-    return everypath
 
 # ftp connect
 ftp = FTP(ftp_domain)
