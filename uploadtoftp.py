@@ -44,6 +44,7 @@ ftpfiles = []
 for ftpfilepath in ftpfilepaths:
     ftpfiles.append(ftpfilepath.split('/')[-1])
 
+# FILEPATH windows(\) or mac(/)...
 if paths[0].find('\\') == -1:
     spliter = '/'
 else:
