@@ -48,7 +48,6 @@ for ftp_relpath in ftp_relpaths:
         localtools.mkdir_unless_exist(local_path)
         ftp.cwd(ftp_curpath)
         print("Downloading ... \t\t\t" + local_pathwithfilename)
-        os.mk
         ftp.retrbinary('RETR %s' % filename, open(local_pathwithfilename, 'wb').write)
 
 ftp.quit()
