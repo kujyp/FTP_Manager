@@ -2,6 +2,7 @@ from ftplib import FTP
 import os
 from config import Parameter
 from src.ftptools import get_everyrelpath_fromftp
+from src.localtools import convert_path_sep
 from src import ftptools
 from tqdm import tqdm
 import sys
@@ -19,7 +20,7 @@ ftp_user = PARMS.ftp_user
 ftp_pwd = PARMS.ftp_pwd
 ftp_homepath = PARMS.ftp_homepath
 ftp_targetpath = PARMS.ftp_targetpath
-ftp_uploadlocaldir = PARMS.ftp_uploadlocaldir
+ftp_uploadlocaldir = convert_path_sep(PARMS.ftp_uploadlocaldir)
 
 def load_allpath(path):
     res = []

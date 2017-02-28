@@ -2,6 +2,7 @@ from ftplib import FTP
 import os
 from config import Parameter
 from src.ftptools import get_everyrelpath_fromftp
+from src.localtools import convert_path_sep
 from src import localtools
 from tqdm import tqdm
 import sys
@@ -19,7 +20,7 @@ ftp_user = PARMS.ftp_user
 ftp_pwd = PARMS.ftp_pwd
 ftp_homepath = PARMS.ftp_homepath
 ftp_targetpath = PARMS.ftp_targetpath
-ftp_downloadlocaldir = PARMS.ftp_downloadlocaldir
+ftp_downloadlocaldir = convert_path_sep(PARMS.ftp_downloadlocaldir)
 
 # mkdir in local
 local_dir = ftp_downloadlocaldir
@@ -27,12 +28,12 @@ localtools.mkdir_unless_exist(ftp_downloadlocaldir)
 
 # ftp connect
 ftp = FTP(ftp_domain)
+print('Connecting FTP Server : \t\t' + ftp_domain)
 ftp.login(ftp_user,ftp_pwd)
-print('Connected FTP Server : \t\t' + ftp_domain)
 
 ftp_path = (ftp_homepath + '/' + ftp_targetpath)
+print('Connecting FTP Dir : \t\t' + ftp_path)
 ftp_relpaths = get_everyrelpath_fromftp(ftp, ftp_path)
-print('Connected FTP Dir : \t\t' + ftp_path)
 
 # Download all files
 pbar = tqdm(ftp_relpaths)
