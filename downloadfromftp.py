@@ -30,6 +30,7 @@ def downloadfromftp():
     # ftp connect
     ftp = FTP(ftp_domain)
     print('Connecting FTP Server : \t\t' + ftp_domain)
+    ftp.encoding = "utf-8"
     ftp.login(ftp_user,ftp_pwd)
 
     ftp_path = (ftp_homepath + '/' + ftp_targetpath)

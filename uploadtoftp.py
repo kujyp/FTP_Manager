@@ -71,7 +71,7 @@ def uploadtoftp():
         local_relpath = local_path[local_abspathlen:]
 
         if file_exists_inftp(ftp_relpaths,local_relpath):
-            pbar.set_description('Exist file : \t\t\t\t' + local_relpath + '\n')
+            pbar.set_description('Exist file : \t\t\t\t' + local_relpath + '\n') # todo exist korean file
         else:
             try:
                 ftptools.mkdir_unless_exist(ftp, ftp_curpath)
