@@ -10,6 +10,6 @@ class Parameter:
         #self.ftp_targetpath = 'fortest'
         self.ftp_uploadlocaldir = 'data/train'
         self.ftp_downloadlocaldir = 'data/test'
-        self.ftp_homepath = '/My_Passport/Download2/workspace/data/LecrecStudy/'
+        self.ftp_homepath = '/My_Passport/Download2/workspace/data/LecrecStudy'
         self.ftp_targetpath = 'ganada'
         # self.ftp_downloadlocaldir = 'downdata/korean/01_20male'
