@@ -2,6 +2,7 @@ from ftplib import error_perm
 
 
 def get_everypath_fromftp(ftp, path):
+    mkdir_unless_exist(ftp, path)
     ftp.cwd(path)
 
     ftp_paths = ftp.nlst()
