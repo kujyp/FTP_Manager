@@ -1,9 +1,9 @@
 from ftplib import FTP
 import os
-from config import Parameter
-from src.ftptools import get_everyrelpath_fromftp
-from src.localtools import convert_path_sep
-from src import localtools
+from .config import Parameter
+from .src.ftptools import get_everyrelpath_fromftp
+from .src.localtools import convert_path_sep
+from .src import localtools
 from tqdm import tqdm
 import sys
 import time
