@@ -6,6 +6,7 @@ from .src.localtools import convert_path_sep
 from .src import ftptools
 from tqdm import tqdm
 import sys
+import unicodedata
 import time
 
 
@@ -29,6 +30,7 @@ def uploadtoftp():
         for root, dirs, files in os.walk(path):
             for file in files:
                filepath = os.path.join(root, file)
+               #filepath = unicodedata.normalize('NFC', filepath)
                res.append(filepath)
         return res
 
@@ -40,6 +42,7 @@ def uploadtoftp():
 
     # ftp connect
     ftp = FTP(ftp_domain)
+    ftp.encoding = "utf-8"
     ftp.login(ftp_user,ftp_pwd)
     print('Connected FTP Server : \t\t' + ftp_domain)
 
