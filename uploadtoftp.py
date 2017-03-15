@@ -10,9 +10,9 @@ import time
 
 
 def uploadtoftp():
-    # encoding for filename with korean
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
+    # encoding for filename with korean ( for 2.7 )
+    #reload(sys)
+    #sys.setdefaultencoding('utf-8')
 
     # load config.py
     PARMS = Parameter()
