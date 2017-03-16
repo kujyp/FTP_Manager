@@ -51,19 +51,19 @@ def downloadfromftp():
 
         local_pathwithfilename = os.path.join(local_path, filename)
         if os.path.isfile(local_pathwithfilename):
-            pbar.set_description('Exist file : \t\t\t\t' + local_pathwithfilename + '\n')
+            pbar.set_description('Exist file : \t\t\t\t' + local_pathwithfilename)
         else:
             try:
                 localtools.mkdir_unless_exist(local_path)
                 ftp.cwd(ftp_curpath)
-                pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + '\n')
+                pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename)
                 ftp.retrbinary('RETR %s' % filename, open(local_pathwithfilename, 'wb').write)
             except:
-                pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + ' retry . ' + '\n')
+                pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + ' retry . ')
                 time.sleep(1)
-                pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + ' retry .. ' + '\n')
+                pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + ' retry .. ')
                 time.sleep(1)
-                pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + ' retry ... ' + '\n')
+                pbar.set_description("Downloading ... \t\t\t" + local_pathwithfilename + ' retry ... ')
                 time.sleep(1)
                 ftp.retrbinary('RETR %s' % filename, open(local_pathwithfilename, 'wb').write)
 
