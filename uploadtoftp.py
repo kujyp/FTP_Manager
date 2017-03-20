@@ -10,14 +10,17 @@ import unicodedata
 import time
 
 
-def uploadtoftp(PARAMS=None):
+def uploadtoftp(PARMS=None):
     # encoding for filename with korean ( for 2.7 )
     #reload(sys)
     #sys.setdefaultencoding('utf-8')
 
     # load config.py
-    if PARAMS is None:
+    if PARMS is None:
         PARMS = Parameter()
+
+    if PARMS.ftp_pwd is '':
+        PARMS.ftp_pwd = input('FTP Password? ')
 
     ftp_domain = PARMS.ftp_domain
     ftp_user = PARMS.ftp_user

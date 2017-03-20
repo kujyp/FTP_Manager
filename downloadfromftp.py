@@ -18,6 +18,9 @@ def downloadfromftp(PARMS=None):
     if PARMS is None:
         PARMS = Parameter()
 
+    if PARMS.ftp_pwd is '':
+        PARMS.ftp_pwd = input('FTP Password? ')
+
     ftp_domain = PARMS.ftp_domain
     ftp_user = PARMS.ftp_user
     ftp_pwd = PARMS.ftp_pwd
